@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PriceList from '../components/PriceList'
 import ViewTab from '../components/ViewTab'
-import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME, parseToYearAndMonth } from '../utility'
+import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME, parseToYearAndMonth, padLeft } from '../utility'
 import MonthPicker from '../components/MonthPicker'
 import TotalPrice from '../components/TotalPrice';
 import CreateBtn from '../components/CreateBtn'
@@ -37,7 +37,7 @@ const items = [
         id: 1,
         title: '去香港旅游',
         price: 97,
-        date: '2019-11-20',
+        date: '2019-10-20',
         cid: 1
     },
     {
@@ -51,21 +51,32 @@ const items = [
         id: 3,
         title: '去香港旅游',
         price: 666,
-        date: '2019-11-20',
+        date: '2019-12-20',
         cid: 2
     }
 ]
 
-const onModifyItem = (item: { id: number }) => {
-    alert(item.id)
-}
-const onTabChange = (view: string) => {
-    console.log(view)
+const newItem =
+{
+    id: 4,
+    title: '去香港旅游',
+    price: 98,
+    date: '2019-11-20',
+    cid: 1
 }
 
-const onChange = (year: number, month: number) => {
-    console.log(year, month)
-}
+const tabsText = [LIST_VIEW, CHART_VIEW]
+
+// const onModifyItem = (item: { id: number }) => {
+//     alert(item.id)
+// }
+// const onTabChange = (view: string) => {
+//     console.log(view)
+// }
+
+// const onChange = (year: number, month: number) => {
+//     console.log(year, month)
+// }
 
 
 interface IProps {
@@ -92,11 +103,53 @@ export default class Home extends Component<IProps, IState> {
         }
     }
 
+    changeView = (view: string) => {
+        // this.setState({
+        //     tabView: tabsText[index],
+        // })
+        this.setState({
+            tabView: view,
+        })
+
+    }
+    changeDate = (year: number, month: number) => {
+        this.setState({
+            currentDate: { year, month }
+        })
+    }
+    modifyItem = (modifidItem: { title: string, id: number }) => {
+        const modifidItems = this.state.items.map(item => {
+            if (item.id === modifidItem.id) {
+                return { ...item, title: 'update' }
+            } else {
+                return item
+            }
+
+        })
+        this.setState({
+            items: modifidItems
+        })
+    }
+
+    createItem = () => {
+        this.setState({
+            items: [newItem, ...this.state.items]
+        })
+    }
+
+    deteteItem = (deletedItem: { id: number }) => {
+        const filterItems = this.state.items.filter(item => item.id !== deletedItem.id)
+        this.setState({ items: filterItems })
+    }
+
     render() {
         const { items, currentDate, tabView } = this.state
         const itemsWithCategory = items.map((item) => {
             item.category = categoies[item.cid]
             return item
+        }).filter(item => {
+
+            return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
         })
         let totalIncome = 0, totalOutcome = 0
         itemsWithCategory.forEach(item => {
@@ -113,7 +166,7 @@ export default class Home extends Component<IProps, IState> {
             <React.Fragment>
                 <div className="row">
                     <div className="col">
-                        <MonthPicker year={currentDate.year} month={currentDate.month} onChange={onChange}></MonthPicker>
+                        <MonthPicker year={currentDate.year} month={currentDate.month} onChange={this.changeDate}></MonthPicker>
                     </div>
                     <div className="col">
                         <TotalPrice
@@ -123,9 +176,17 @@ export default class Home extends Component<IProps, IState> {
                     </div>
                 </div>
                 <div className="content-area py-3 px-3">
-                    <ViewTab activeTab={tabView} onTabChange={onTabChange} />
-                    <CreateBtn onClick={() => { }}></CreateBtn>
-                    <PriceList items={items} onModifyItem={onModifyItem} onDeleteItem={onModifyItem} />
+                    <ViewTab activeTab={tabView} onTabChange={this.changeView} />
+                    <CreateBtn onClick={this.createItem}></CreateBtn>
+                    {
+                        tabView === LIST_VIEW && <PriceList items={itemsWithCategory} onModifyItem={this.modifyItem} onDeleteItem={this.deteteItem} />
+
+                    }
+                    {
+                        tabView === CHART_VIEW &&
+                        <h1>这里是图表</h1>
+                    }
+
                 </div>
             </React.Fragment>
         )

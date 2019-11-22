@@ -4,7 +4,7 @@ import Ionicon from 'react-ionicons'
 
 interface IProps {
     items: Array<{ id: number, title: string, price: number, date: string, category: { id: number, name: string, type: string, iconName: string } }>,
-    onModifyItem: (item: { id: number }) => void,
+    onModifyItem: (item: { id: number, title: string }) => void,
     onDeleteItem: (item: { id: number }) => void
 }
 
@@ -30,7 +30,7 @@ const PriceList = (props: IProps) => {
                             {item.price}元
                         </span>
                         <span className="col-2">{item.date}</span>
-                        <a className="col-1" onClick={() => props.onModifyItem(item)} href='javascript;'>
+                        <button className="col-1" onClick={() => props.onModifyItem(item)}>
                             <Ionicon
                                 className="rounded-circle"
                                 fontSize="30px"
@@ -39,8 +39,8 @@ const PriceList = (props: IProps) => {
                                 icon='ios-create-outline'>
 
                             </Ionicon>
-                        </a>
-                        <a className="col-1 " onClick={() => props.onDeleteItem(item)} href='javascript;'>
+                        </button>
+                        <button className="col-1 " onClick={() => props.onDeleteItem(item)} >
                             <Ionicon
                                 className="rounded-circle"
                                 fontSize="30px"
@@ -48,7 +48,7 @@ const PriceList = (props: IProps) => {
                                 color={'#fff'}
                                 icon='ios-close'
                             />
-                        </a>
+                        </button>
                     </li>
                 ))
             }

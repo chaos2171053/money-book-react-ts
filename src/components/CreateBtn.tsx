@@ -8,7 +8,7 @@ interface IProps {
 const CreateBtn = (props: IProps) => (
     <button
         className="btn btn-primary btn-block d-flex justify-content-center align-items-center"
-        onClick={(e) => { props.onClick() }}
+        onClick={() => { props.onClick() }}
     >
         <Ionicon
             className="rounded-circle"
