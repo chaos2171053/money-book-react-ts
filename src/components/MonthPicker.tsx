@@ -11,7 +11,7 @@ interface IState {
     selectYear: number
 }
 
-export default class EditForm extends Component<IProps, IState> {
+export default class MonthPicker extends Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
@@ -45,6 +45,7 @@ export default class EditForm extends Component<IProps, IState> {
         })
         this.props.onChange(this.state.selectYear, monthNumber)
     }
+
 
     render() {
         const { year, month } = this.props
