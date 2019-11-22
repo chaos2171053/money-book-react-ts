@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import PriceList from './components/PriceList'
 import ViewTab from './components/ViewTab'
 import { LIST_VIEW } from './utility'
+import MonthPicker from './components/MonthPick'
 
 const items = [
   {
@@ -33,6 +34,7 @@ class App extends Component {
       <div className="App">
         <PriceList items={items} onModifyItem={onModifyItem} onDeleteItem={onModifyItem} />
         <ViewTab activeTab={LIST_VIEW} onTabChange={onTabChange} />
+        <MonthPicker year={2019} month={11}></MonthPicker>
       </div>
     )
   }
