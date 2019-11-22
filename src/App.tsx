@@ -28,13 +28,17 @@ const onTabChange = (view: string) => {
   console.log(view)
 }
 
+const onChange = (year: number, month: number) => {
+  console.log(year, month)
+}
+
 class App extends Component {
   render() {
     return (
       <div className="App">
         <PriceList items={items} onModifyItem={onModifyItem} onDeleteItem={onModifyItem} />
         <ViewTab activeTab={LIST_VIEW} onTabChange={onTabChange} />
-        <MonthPicker year={2019} month={11}></MonthPicker>
+        <MonthPicker year={2019} month={11} onChange={onChange}></MonthPicker>
       </div>
     )
   }
