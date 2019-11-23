@@ -1,9 +1,11 @@
 import React from 'react'
 import Ionicon from 'react-ionicons'
+import { PriceItem } from '../containers/Home'
 
 
 interface IProps {
-    items: Array<{ id: number, title: string, price: number, date: string, category: { id: number, name: string, type: string, iconName: string } }>,
+    //items: Array < { id: number, title: string, price: number, date: string, category: { id: number, name: string, type: string, iconName: string } } >,
+    items: Array<PriceItem>,
     onModifyItem: (item: { id: number, title: string }) => void,
     onDeleteItem: (item: { id: number }) => void
 }
@@ -12,7 +14,7 @@ const PriceList = (props: IProps) => {
     return (
         <ul className="list-group list-group-flush">
             {
-                props.items.map((item) => (
+                props.items.map((item: PriceItem) => (
                     <li className="list-group-item d-flex justify-content-between align-items-center" key={item.id}>
                         <span className="col-1">
                             <Ionicon

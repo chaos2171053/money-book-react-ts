@@ -17,8 +17,17 @@ declare interface CategoriesMap {
     [key: number]: Category;
 }
 
+export interface PriceItem {
+    id: number,
+    title: string,
+    price: number,
+    date: string,
+    cid: number,
+    category?: { id: number, name: string, type: string, iconName: string }
+}
 
-const categoies: CategoriesMap = {
+
+export const categoies: CategoriesMap = {
     1: {
         id: 1,
         name: '旅行',
@@ -32,7 +41,7 @@ const categoies: CategoriesMap = {
         iconName: 'ios-plane'
     }
 }
-const items = [
+export const items: Array<PriceItem> = [
     {
         id: 1,
         title: '去香港旅游',
@@ -93,7 +102,7 @@ interface IState {
 }
 
 
-export default class Home extends Component<IProps, IState> {
+export class Home extends Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
