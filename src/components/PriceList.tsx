@@ -5,7 +5,7 @@ import { PriceItem } from '../containers/Home'
 
 interface IProps {
     //items: Array < { id: number, title: string, price: number, date: string, category: { id: number, name: string, type: string, iconName: string } } >,
-    items: Array<PriceItem>,
+    items: Array<any>,
     onModifyItem: (item: { id: number, title: string }) => void,
     onDeleteItem: (item: { id: number }) => void
 }

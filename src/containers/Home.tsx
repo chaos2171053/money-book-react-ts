@@ -23,7 +23,7 @@ export interface PriceItem {
     price: number,
     date: string,
     cid: number,
-    category?: { id: number, name: string, type: string, iconName: string }
+    category: { id: number, name: string, type: string, iconName: string }
 }
 
 
@@ -41,7 +41,7 @@ export const categoies: CategoriesMap = {
         iconName: 'ios-plane'
     }
 }
-export const items: Array<PriceItem> = [
+export const items: Array<any> = [
     {
         id: 1,
         title: '去香港旅游',

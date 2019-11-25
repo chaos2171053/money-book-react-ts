@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test ViewTab component should render the component to match snapshot 1`] = `ShallowWrapper {}`;
