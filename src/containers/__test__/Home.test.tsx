@@ -9,7 +9,6 @@ import TotalPrice from '../../components/TotalPrice';
 import CreateBtn from '../../components/CreateBtn'
 import PriceList from '../../components/PriceList'
 import ViewTab from '../../components/ViewTab'
-import { wrap } from 'module'
 
 let wrapper: ReactWrapper
 
@@ -48,5 +47,16 @@ describe('test Home container component', () => {
     it('click delete button, should remove the item', () => {
         wrapper.find(PriceList).children().first().find('button').last().simulate('click')
         expect(wrapper.find(PriceList).props().items.length).toEqual(0)
+    })
+    it('validate total income price', () => {
+        let totalIncome = 0
+
+        wrapper.find(PriceList).props().items.forEach(item => {
+            if (item.category.type === TYPE_INCOME) {
+                totalIncome += item.price
+            }
+
+        })
+        expect(wrapper.find(TotalPrice).props().income).toEqual(totalIncome)
     })
 })
