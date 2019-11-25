@@ -65,7 +65,7 @@ export const items: Array<any> = [
     }
 ]
 
-const newItem =
+export const newItem =
 {
     id: 4,
     title: '去香港旅游',
