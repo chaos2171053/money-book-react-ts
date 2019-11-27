@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test PriceForm component should render the component to match snapshot 1`] = `ReactWrapper {}`;
+
+exports[`test PriceForm component should render the component to match snapshot 2`] = `ReactWrapper {}`;

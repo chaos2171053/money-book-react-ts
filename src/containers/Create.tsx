@@ -1,4 +1,5 @@
 import React from 'react'
+import PriceForm from '../components/PriceForm'
 
 const Create = ({
     match
@@ -6,6 +7,7 @@ const Create = ({
     return (
         <div>
             this is a new page{match.params.id}
+            <PriceForm onFormSubmit={() => { }} onCancelSubmit={() => { }}></PriceForm>
         </div>
     )
 }
