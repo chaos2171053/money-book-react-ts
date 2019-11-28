@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { mount, ReactWrapper } from 'enzyme'
+import { mount, ReactWrapper, CommonWrapper } from 'enzyme'
 import PriceForm from '../PriceForm'
 import { testItems } from '../../testData'
 let props = {
@@ -13,7 +13,7 @@ let props_with_item = {
     onCancelSubmit: jest.fn(),
 }
 
-let wrapper: ReactWrapper, formInstance: Component, wrapper2: ReactWrapper
+let wrapper: ReactWrapper, formInstance: ReactWrapper, wrapper2: ReactWrapper
 export const getInputValue = (selector: string, wrapper: ReactWrapper) => (
     wrapper.find(selector).instance().value
 )
@@ -65,7 +65,8 @@ describe('test PriceForm component', () => {
             setInputValue('#date', '2018-01-01', wrapper)
             const newItem = { title: 'test', price: 20, date: '2018-01-01' }
             wrapper.find('form').simulate('submit')
-            expect(props.onFormSubmit).toHaveBeenCalledWith(newItem, false)
+            expect(formInstance.state.validatePass).toEqual(true)
+            expect(props.onFormSubmit).toBeCalledWith(newItem, false)
         })
         it('click the cancel button should call the right callback', () => {
             wrapper.find('button').last().simulate('click')
@@ -83,7 +84,7 @@ describe('test PriceForm component', () => {
             setInputValue('#price', '200', wrapper2)
             wrapper2.find('form').simulate('submit')
             const newItem = { ...testItems[0], title: 'new title', price: 200 }
-            expect(formInstance.state.validatePass).toEqual(true)
+            expect(wrapper2.state('validatePass')).toEqual(true)
             expect(wrapper2.find('.alert').length).toEqual(0)
             expect(props_with_item.onFormSubmit).toHaveBeenCalledWith(newItem, true)
         })
