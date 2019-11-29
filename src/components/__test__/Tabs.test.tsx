@@ -1,5 +1,5 @@
 import React from 'react'
-import { mount, ReactWrapper } from 'enzyme'
+import { mount, ReactWrapper, shallow, ShallowWrapper } from 'enzyme'
 import { Tabs, Tab } from '../Tabs'
 
 
@@ -22,4 +22,9 @@ describe('test Tabs compotent', () => {
     it('should render correct tab item', () => {
         expect(wrapper.find('Tab').length).toEqual(2)
     })
+    // it('click a tab,should trigger the callback and render the correct tab', () => {
+
+    //     wrapper.find('Tab').last().simulate('click', { preventDefault: () => { } })
+    //     expect(wrapper.state('activeIndex')).toEqual(1)
+    // })
 })
