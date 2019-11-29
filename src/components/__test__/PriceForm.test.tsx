@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { mount, ReactWrapper, CommonWrapper } from 'enzyme'
 import PriceForm from '../PriceForm'
 import { testItems } from '../../testData'

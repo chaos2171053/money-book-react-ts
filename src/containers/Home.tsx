@@ -5,7 +5,8 @@ import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME, parseToYearAndMonth, 
 import MonthPicker from '../components/MonthPicker'
 import TotalPrice from '../components/TotalPrice';
 import CreateBtn from '../components/CreateBtn'
-
+import { Tab, Tabs } from '../components/Tabs'
+import Ionicon from 'react-ionicons'
 
 interface Category {
     id: number,
@@ -108,18 +109,14 @@ export class Home extends Component<IProps, IState> {
         this.state = {
             items,
             currentDate: parseToYearAndMonth(),
-            tabView: LIST_VIEW
+            tabView: tabsText[0],
         }
     }
 
-    changeView = (view: string) => {
-        // this.setState({
-        //     tabView: tabsText[index],
-        // })
+    changeView = (index: number) => {
         this.setState({
-            tabView: view,
+            tabView: tabsText[index],
         })
-
     }
     changeDate = (year: number, month: number) => {
         this.setState({
@@ -185,7 +182,27 @@ export class Home extends Component<IProps, IState> {
                     </div>
                 </div>
                 <div className="content-area py-3 px-3">
-                    <ViewTab activeTab={tabView} onTabChange={this.changeView} />
+                    <Tabs activeIndex={0} onTabChange={this.changeView}>
+                        <Tab>
+                            <Ionicon
+                                className="rounded-circle mr-2"
+                                fontSize="25px"
+                                color={'#007bff'}
+                                icon='ios-paper'
+                            />
+                            列表模式
+                        </Tab>
+                        <Tab>
+                            <Ionicon
+                                className="rounded-circle mr-2"
+                                fontSize="25px"
+                                color={'#007bff'}
+                                icon='ios-pie'
+                            />
+                            图表模式
+                        </Tab>
+                    </Tabs>
+                    {/* <ViewTab activeTab={tabView} onTabChange={() => this.changeView(0)} /> */}
                     <CreateBtn onClick={this.createItem}></CreateBtn>
                     {
                         tabView === LIST_VIEW && <PriceList items={itemsWithCategory} onModifyItem={this.modifyItem} onDeleteItem={this.deteteItem} />
