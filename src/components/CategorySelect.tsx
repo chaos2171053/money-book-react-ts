@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Ionicon from 'react-ionicons'
-
+import { Colors } from '../utility'
 interface Category {
-    id: number,
+    id: string,
     name: string,
     type: string,
     iconName: string
@@ -10,12 +10,12 @@ interface Category {
 
 interface IProps {
     categories: Array<Category>,
-    selectedCategory: Category
+    selectedCategory?: Category
     onSelectCategory: Function
 }
 
 interface IState {
-    selectedCategoryId?: number
+    selectedCategoryId?: string | null
 }
 
 
@@ -24,7 +24,7 @@ class CategorySelect extends Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
-            selectedCategoryId: props.selectedCategory && props.selectedCategory.id
+            selectedCategoryId: props.selectedCategory ? props.selectedCategory.id : null
         }
     }
     selectCatory = (event: any, category: Category) => {
@@ -41,10 +41,19 @@ class CategorySelect extends Component<IProps, IState> {
             <div className="category-select-component">
                 <div className="row">
                     {categories.map((category, index) => {
+                        const iconColor = (category.id === selectedCategoryId) ? Colors.white : Colors.gray
+                        const backColor = (category.id === selectedCategoryId) ? Colors.blue : Colors.lightGray
                         const activeClassName = (selectedCategoryId && (selectedCategoryId === category.id)) ? 'category-item col-3 active' : 'category-item col-3'
                         return (
                             <div className={activeClassName} key={index} onClick={(event) => this.selectCatory(event, category)}>
-                                <Ionicon clasName="rounded-circle" fontSize="50px" color="#555" icon={category.iconName}></Ionicon>
+                                <Ionicon
+                                    className="rounded-circle"
+                                    style={{ backgroundColor: backColor, padding: '5px' }}
+                                    fontSize="50px"
+                                    color={iconColor}
+                                    icon={category.iconName}>
+
+                                </Ionicon>
                             </div>
                         )
                     })}
