@@ -6,7 +6,7 @@ import TotalPrice from '../components/TotalPrice';
 import CreateBtn from '../components/CreateBtn'
 import { Tab, Tabs } from '../components/Tabs'
 import Ionicon from 'react-ionicons'
-
+import { AppContext } from '../App'
 interface Category {
     id: number,
     name: string,
@@ -168,52 +168,62 @@ export class Home extends Component<IProps, IState> {
 
 
         return (
-            <React.Fragment>
-                <div className="row">
-                    <div className="col">
-                        <MonthPicker year={currentDate.year} month={currentDate.month} onChange={this.changeDate}></MonthPicker>
-                    </div>
-                    <div className="col">
-                        <TotalPrice
-                            income={totalIncome}
-                            outcome={totalOutcome}
-                        />
-                    </div>
-                </div>
-                <div className="content-area py-3 px-3">
-                    <Tabs activeIndex={0} onTabChange={this.changeView}>
-                        <Tab>
-                            <Ionicon
-                                className="rounded-circle mr-2"
-                                fontSize="25px"
-                                color={'#007bff'}
-                                icon='ios-paper'
-                            />
-                            列表模式
-                        </Tab>
-                        <Tab>
-                            <Ionicon
-                                className="rounded-circle mr-2"
-                                fontSize="25px"
-                                color={'#007bff'}
-                                icon='ios-pie'
-                            />
-                            图表模式
-                        </Tab>
-                    </Tabs>
-                    {/* <ViewTab activeTab={tabView} onTabChange={() => this.changeView(0)} /> */}
-                    <CreateBtn onClick={this.createItem}></CreateBtn>
-                    {
-                        tabView === LIST_VIEW && <PriceList items={itemsWithCategory} onModifyItem={this.modifyItem} onDeleteItem={this.deteteItem} />
+            <AppContext.Consumer>
+                {
+                    (consumer: any) => {
+                        return (
+                            <React.Fragment>
+                                <div className="row">
+                                    <div className="col">
+                                        <MonthPicker year={currentDate.year} month={currentDate.month} onChange={this.changeDate}></MonthPicker>
+                                    </div>
+                                    <div className="col">
+                                        <TotalPrice
+                                            income={totalIncome}
+                                            outcome={totalOutcome}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="content-area py-3 px-3">
+                                    <Tabs activeIndex={0} onTabChange={this.changeView}>
+                                        <Tab>
+                                            <Ionicon
+                                                className="rounded-circle mr-2"
+                                                fontSize="25px"
+                                                color={'#007bff'}
+                                                icon='ios-paper'
+                                            />
+                                            列表模式
+                                        </Tab>
+                                        <Tab>
+                                            <Ionicon
+                                                className="rounded-circle mr-2"
+                                                fontSize="25px"
+                                                color={'#007bff'}
+                                                icon='ios-pie'
+                                            />
+                                            图表模式
+                                    </Tab>
+                                    </Tabs>
+                                    {/* <ViewTab activeTab={tabView} onTabChange={() => this.changeView(0)} /> */}
+                                    <CreateBtn onClick={this.createItem}></CreateBtn>
+                                    {
+                                        tabView === LIST_VIEW && <PriceList items={itemsWithCategory} onModifyItem={this.modifyItem} onDeleteItem={this.deteteItem} />
 
-                    }
-                    {
-                        tabView === CHART_VIEW &&
-                        <h1>这里是图表</h1>
-                    }
+                                    }
+                                    {
+                                        tabView === CHART_VIEW &&
+                                        <h1>这里是图表</h1>
+                                    }
 
-                </div>
-            </React.Fragment>
+                                </div>
+                            </React.Fragment>
+                        )
+                    }
+                }
+
+            </AppContext.Consumer>
+
         )
     }
 }

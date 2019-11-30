@@ -40,3 +40,10 @@ export const Colors = {
     lightGray: '#efefef',
     white: '#fff',
 }
+
+export const flatternArray = (arr: Array<any>) => {
+    return arr.reduce((pre, cur) => {
+        pre[cur.id] = pre
+        return pre
+    }, {})
+}
