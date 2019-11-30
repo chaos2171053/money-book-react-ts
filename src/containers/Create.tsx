@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PriceForm from '../components/PriceForm'
-import { testItems, testCategories } from '../testData'
+import { testCategories } from '../testData'
 import { Tabs, Tab } from '../components/Tabs'
-import { TYPE_INCOME, TYPE_OUTCOME } from '../utility'
+import { TYPE_OUTCOME } from '../utility'
 import CategorySelect from '../components/CategorySelect'
 interface Ipros {
     match: { [key: string]: any }

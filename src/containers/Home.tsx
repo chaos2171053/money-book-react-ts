@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PriceList from '../components/PriceList'
-import ViewTab from '../components/ViewTab'
-import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME, parseToYearAndMonth, padLeft } from '../utility'
+import { LIST_VIEW, CHART_VIEW, TYPE_OUTCOME, parseToYearAndMonth, padLeft } from '../utility'
 import MonthPicker from '../components/MonthPicker'
 import TotalPrice from '../components/TotalPrice';
 import CreateBtn from '../components/CreateBtn'
