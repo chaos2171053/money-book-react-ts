@@ -1,11 +1,12 @@
-import React from 'react'
-import { AppContext, IAppState } from '../App'
+import React, { ComponentClass, FunctionComponent } from 'react'
+import { AppContext } from '../App'
 
-const withContext = (Component: any) => {
+
+const withContext = (Component: ComponentClass | FunctionComponent) => {
     return (props: any) => (
         <AppContext.Consumer>
             {
-                ({ state }: { state: IAppState }) => {
+                ({ state }: any) => {
                     return (
                         <Component {...props} data={state}></Component>
                     )
