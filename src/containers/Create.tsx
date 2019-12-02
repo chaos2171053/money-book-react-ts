@@ -4,35 +4,29 @@ import { testCategories } from '../testData'
 import { Tabs, Tab } from '../components/Tabs'
 import { TYPE_OUTCOME } from '../utility'
 import CategorySelect from '../components/CategorySelect'
-import { AppContext } from '../App'
+import WithContext from '../components/WithContext'
+import { RouteComponentProps, withRouter } from 'react-router'
 interface Ipros {
-    match: { [key: string]: any }
+
 }
-export default class Create extends Component<Ipros>{
+class CreatePage extends Component<Ipros & RouteComponentProps>{
     render() {
         const filterCategories = testCategories.filter(category => {
             return category.type === TYPE_OUTCOME
         })
         return (
-            <AppContext.Consumer>
-                {(consumer: any) => {
-                    return (
-                        <div className="create-page py-3 px-3 rounded mt-3" style={{ background: '#fff' }}>
-                            <Tabs activeIndex={0} onTabChange={() => { }}>
-                                <Tab>支出</Tab>
-                                <Tab>收入</Tab>
-                            </Tabs>
-                            <CategorySelect categories={filterCategories}
-                                onSelectCategory={() => { }}
-                            />
-                            <PriceForm onFormSubmit={() => { }} onCancelSubmit={() => { }} ></PriceForm>
-                        </div >
-                    )
-                }
-
-                }
-            </AppContext.Consumer>
-
+            <div className="create-page py-3 px-3 rounded mt-3" style={{ background: '#fff' }}>
+                <Tabs activeIndex={0} onTabChange={() => { }}>
+                    <Tab>支出</Tab>
+                    <Tab>收入</Tab>
+                </Tabs>
+                <CategorySelect categories={filterCategories}
+                    onSelectCategory={() => { }}
+                />
+                <PriceForm onFormSubmit={() => { }} onCancelSubmit={() => { }} ></PriceForm>
+            </div >
         )
     }
 }
+
+export default WithContext(withRouter(CreatePage))

@@ -1,8 +1,8 @@
-import React, { ComponentClass, FunctionComponent } from 'react'
+import React, { ComponentType } from 'react'
 import { AppContext } from '../App'
 
 
-const withContext = (Component: ComponentClass | FunctionComponent) => {
+const WithContext = (Component: ComponentType) => {
     return (props: any) => (
         <AppContext.Consumer>
             {
@@ -15,4 +15,4 @@ const withContext = (Component: ComponentClass | FunctionComponent) => {
         </AppContext.Consumer>
     )
 }
-export default withContext
+export default WithContext

@@ -7,6 +7,7 @@ import CreateBtn from '../components/CreateBtn'
 import { Tab, Tabs } from '../components/Tabs'
 import Ionicon from 'react-ionicons'
 import { AppContext } from '../App'
+import withContext from '../components/WithContext';
 interface Category {
     id: number,
     name: string,
@@ -102,7 +103,7 @@ interface IState {
 }
 
 
-export class Home extends Component<IProps, IState> {
+class HomePage extends Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
         this.state = {
@@ -227,5 +228,7 @@ export class Home extends Component<IProps, IState> {
         )
     }
 }
+
+export const Home = withContext(HomePage)
 
 
