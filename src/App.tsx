@@ -4,7 +4,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Home } from './containers/Home'
 import Create from './containers/Create'
-import { flatternArray } from './utility'
+import { flatternArray, ID, parseToYearAndMonth } from './utility'
 import { testCategories, testItems } from './testData'
 
 
@@ -47,6 +47,16 @@ export class App extends Component<IProps, IAppState> {
         this.setState({
           items: this.state.items
         })
+      },
+      createItem: (data: any, categoryId: string) => {
+        const newId = ID()
+        const parsedDate = parseToYearAndMonth(data.date)
+        data.monthCategory = `${parsedDate.year}-${parsedDate.month}`
+        data.timestamp = new Date(data.date).getTime()
+        const newItem = { ...data, id: newId, cid: categoryId }
+        this.setState({
+          items: { ...this.state.items, [newId]: newItem }
+        })
       }
     }
   }
@@ -59,11 +69,6 @@ export class App extends Component<IProps, IAppState> {
         <Router>
           <div className="App">
             <div className="containers pb-5">
-              <ul>
-                <Link to='/'>Home</Link>
-                <Link to='/create'>Create</Link>
-                <Link to='/edit/10'>Edit</Link>
-              </ul>
               <Route path="/" exact component={Home}></Route>
               <Route path="/create" component={Create}></Route>
               <Route path="/edit/:id" component={Create}></Route>

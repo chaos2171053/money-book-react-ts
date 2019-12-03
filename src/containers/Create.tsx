@@ -15,14 +15,19 @@ interface IProps {
         params: {
             id?: string
         }
+    },
+    actions: {
+        createItem: Function,
+        updateItem: Function
     }
 }
 interface IState {
     selectedTab: string,
-    selectedCategory: object,
+    selectedCategory: Category,
     validationPassed: boolean
 }
 class CreatePage extends Component<IProps & RouteComponentProps, IState>{
+
     constructor(props: IProps & RouteComponentProps) {
         super(props)
         this.state = {
@@ -50,6 +55,27 @@ class CreatePage extends Component<IProps & RouteComponentProps, IState>{
     cancelSubmit = () => {
         this.props.history.push('/')
     }
+    submitForm = (data: any, isEditMode: boolean) => {
+        if (!this.state.selectedCategory.id) {
+            this.setState({
+                validationPassed: false
+            })
+            return
+        }
+        if (!isEditMode) {
+            // create
+            //this.props.actions.createItem(data, this.state.selectedCategory.id).then(this.navigateToHome)
+            this.props.actions.createItem(data, this.state.selectedCategory.id)
+        } else {
+            // update 
+            //this.props.actions.updateItem(data, this.state.selectedCategory.id).then(this.navigateToHome)
+            this.props.actions.createItem(data, this.state.selectedCategory.id)
+        }
+        this.props.history.push('/')
+    }
+    navigateToHome = () => {
+        this.props.history.push('/')
+    }
 
     render() {
         const { data } = this.props
@@ -72,7 +98,7 @@ class CreatePage extends Component<IProps & RouteComponentProps, IState>{
                     selectedCategory={selectedCategory}
                     onSelectCategory={this.selectCategory}
                 />
-                <PriceForm onFormSubmit={() => { }} onCancelSubmit={this.cancelSubmit} ></PriceForm>
+                <PriceForm onFormSubmit={this.submitForm} onCancelSubmit={this.cancelSubmit} ></PriceForm>
                 {!validationPassed &&
                     <div className="alert alert-danger mt-5" role="alert">
                         请选择分类信息
