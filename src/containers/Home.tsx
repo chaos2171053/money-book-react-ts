@@ -96,16 +96,17 @@ class HomePage extends Component<IProps, IState> {
     render() {
         const { data } = this.props
 
-        //let { items, categories } = data
+        let { items, categories } = data
         const { currentDate, tabView } = this.state
-        const itemsWithCategory = data && data.items && Object.keys(data.items).map((id: string) => {
-            data.items[id].category = data.categories[data.items[id].cid]
-            return data.items[id]
-        }).filter(item => {
-
-            return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
+        const itemsWithCategory = Object.keys(items).map((id: string) => {
+            items[id].category = categories[items[id].cid]
+            return items[id]
         })
+            .filter(item => {
+                return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
+            })
         let totalIncome = 0, totalOutcome = 0
+
         itemsWithCategory && itemsWithCategory.forEach(item => {
             if (item.category.type === TYPE_OUTCOME) {
                 totalOutcome += item.price
@@ -113,8 +114,6 @@ class HomePage extends Component<IProps, IState> {
                 totalIncome += item.price
             }
         })
-
-
 
         return (
             <React.Fragment>

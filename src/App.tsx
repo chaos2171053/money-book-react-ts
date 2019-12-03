@@ -43,7 +43,6 @@ export class App extends Component<IProps, IAppState> {
     }
     this.actions = {
       deleteItem: (item: { id: string }) => {
-        console.log(this.state.items, item)
         delete this.state.items[item.id]
         this.setState({
           items: this.state.items
