@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Ionicon from 'react-ionicons'
 import { Colors } from '../utility'
-interface Category {
+export interface Category {
     id: string,
     name: string,
     type: string,
@@ -10,23 +10,17 @@ interface Category {
 
 interface IProps {
     categories: Array<Category>,
-    selectedCategory?: Category
+    selectedCategory: any,
     onSelectCategory: Function
 }
 
-interface IState {
-    selectedCategoryId?: string | null
-}
+// interface IState {
+//     selectedCategoryId?: string | null
+// }
 
 
 
-class CategorySelect extends Component<IProps, IState> {
-    constructor(props: IProps) {
-        super(props)
-        this.state = {
-            selectedCategoryId: props.selectedCategory ? props.selectedCategory.id : null
-        }
-    }
+export class CategorySelect extends Component<IProps> {
     selectCatory = (event: any, category: Category) => {
         this.setState({
             selectedCategoryId: category.id
@@ -35,8 +29,8 @@ class CategorySelect extends Component<IProps, IState> {
         this.props.onSelectCategory(category)
     }
     render() {
-        const { categories } = this.props
-        const { selectedCategoryId } = this.state
+        const { categories, selectedCategory } = this.props
+        const selectedCategoryId = selectedCategory && selectedCategory.id
         return (
             <div className="category-select-component">
                 <div className="row">
@@ -63,4 +57,3 @@ class CategorySelect extends Component<IProps, IState> {
     }
 }
 
-export default CategorySelect

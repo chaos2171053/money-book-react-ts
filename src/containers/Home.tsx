@@ -7,16 +7,12 @@ import TotalPrice from '../components/TotalPrice';
 import CreateBtn from '../components/CreateBtn'
 import { Tab, Tabs } from '../components/Tabs'
 import Ionicon from 'react-ionicons'
-import { AppContext } from '../App'
 import WithContext from '../components/WithContext';
 interface Category {
     id: string,
     name: string,
     type: string,
     iconName: string
-}
-declare interface CategoriesMap {
-    [key: number]: Category;
 }
 
 export interface PriceItem {
