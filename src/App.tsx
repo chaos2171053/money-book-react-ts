@@ -9,19 +9,19 @@ import { testCategories, testItems } from './testData'
 
 
 interface Category {
-  id: number,
+  id: string,
   name: string,
   type: string,
   iconName: string
 }
 
 interface PriceItem {
-  id: number,
+  id: string,
   title: string,
   price: number,
   date: string,
-  cid: number,
-  category: { id: number, name: string, type: string, iconName: string }
+  cid: string,
+  category: { id: string, name: string, type: string, iconName: string }
 }
 interface IProps {
 
@@ -34,17 +34,28 @@ export interface IAppState {
 export const AppContext = React.createContext({})
 
 export class App extends Component<IProps, IAppState> {
+  actions: {};
   constructor(props: IProps) {
     super(props);
     this.state = {
       categories: flatternArray(testCategories),
-      items: flatternArray(testItems)
+      items: flatternArray(testItems),
+    }
+    this.actions = {
+      deleteItem: (item: { id: string }) => {
+        console.log(this.state.items, item)
+        delete this.state.items[item.id]
+        this.setState({
+          items: this.state.items
+        })
+      }
     }
   }
   render() {
     return (
       <AppContext.Provider value={{
-        state: this.state
+        state: this.state,
+        actions: this.actions
       }}>
         <Router>
           <div className="App">

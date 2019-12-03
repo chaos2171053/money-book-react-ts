@@ -42,8 +42,9 @@ export const Colors = {
 }
 
 export const flatternArray = (arr: Array<any>) => {
-    return arr.reduce((pre, cur) => {
-        pre[cur.id] = pre
-        return pre
+    return arr.reduce((map, item) => {
+        map[item.id] = item
+        return map
     }, {})
 }
+

@@ -5,7 +5,7 @@ import { Tabs, Tab } from '../components/Tabs'
 import { TYPE_OUTCOME } from '../utility'
 import CategorySelect from '../components/CategorySelect'
 import WithContext from '../components/WithContext'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 interface Ipros {
 
 }

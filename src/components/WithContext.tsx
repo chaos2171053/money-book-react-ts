@@ -2,13 +2,13 @@ import React, { ComponentType } from 'react'
 import { AppContext } from '../App'
 
 
-const WithContext = (Component: ComponentType) => {
+const WithContext = (Component: any) => {
     return (props: any) => (
         <AppContext.Consumer>
             {
-                ({ state }: any) => {
+                ({ state, actions }: any) => {
                     return (
-                        <Component {...props} data={state}></Component>
+                        <Component {...props} data={state} actions={actions}></Component>
                     )
                 }
             }
