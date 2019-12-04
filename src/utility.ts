@@ -41,7 +41,7 @@ export const Colors = {
     white: '#fff',
 }
 
-export const flatternArray = (arr: Array<any>) => {
+export const flatternArr = (arr: Array<any>) => {
     return arr.reduce((map, item) => {
         map[item.id] = item
         return map

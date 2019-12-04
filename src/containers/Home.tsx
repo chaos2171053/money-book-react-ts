@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import PriceList from '../components/PriceList'
-import { LIST_VIEW, CHART_VIEW, TYPE_OUTCOME, parseToYearAndMonth, padLeft } from '../utility'
+import { LIST_VIEW, CHART_VIEW, TYPE_OUTCOME } from '../utility'
 import MonthPicker from '../components/MonthPicker'
 import TotalPrice from '../components/TotalPrice';
 import CreateBtn from '../components/CreateBtn'
 import { Tab, Tabs } from '../components/Tabs'
 import Ionicon from 'react-ionicons'
 import WithContext from '../components/WithContext';
+import { IAppPageState } from '../App'
 interface Category {
     id: string,
     name: string,
@@ -35,18 +36,20 @@ interface IProps extends RouteComponentProps {
         },
         categories: {
             [key: string]: Category
+        },
+        currentDate: {
+            year: number,
+            month: number
         }
-    }
+    },
     actions: {
-        deleteItem: Function
+        deleteItem: Function,
+        getInitalData: Function,
+        selectNewMonth: Function
     }
 }
 
 interface IState {
-    currentDate: {
-        year: number,
-        month: number
-    },
     tabView: string
 }
 
@@ -55,16 +58,22 @@ class HomePage extends Component<IProps, IState> {
     static defaultProps = {
         data: {
             items: {},
-            categories: {}
+            categories: {},
+            currentDate: {
+                year: 0,
+                month: 0
+            }
         }
     }
     constructor(props: IProps) {
         super(props)
         this.state = {
             // items,
-            currentDate: parseToYearAndMonth(),
             tabView: tabsText[0],
         }
+    }
+    componentDidMount() {
+        this.props.actions.getInitalData()
     }
 
     changeView = (index: number) => {
@@ -73,9 +82,7 @@ class HomePage extends Component<IProps, IState> {
         })
     }
     changeDate = (year: number, month: number) => {
-        this.setState({
-            currentDate: { year, month }
-        })
+        this.props.actions.selectNewMonth(year, month)
     }
     modifyItem = (modifidItem: { title: string, id: string }) => {
         this.props.history.push(`/edit/${modifidItem.id}`)
@@ -92,15 +99,12 @@ class HomePage extends Component<IProps, IState> {
     render() {
         const { data } = this.props
 
-        let { items, categories } = data
-        const { currentDate, tabView } = this.state
+        let { items, categories, currentDate } = data
+        const { tabView } = this.state
         const itemsWithCategory = Object.keys(items).map((id: string) => {
             items[id].category = categories[items[id].cid]
             return items[id]
         })
-            .filter(item => {
-                return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
-            })
         let totalIncome = 0, totalOutcome = 0
 
         itemsWithCategory && itemsWithCategory.forEach(item => {

@@ -4,9 +4,8 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Home } from './containers/Home'
 import Create from './containers/Create'
-import { flatternArray, ID, parseToYearAndMonth } from './utility'
-import { testCategories, testItems } from './testData'
-
+import { flatternArr, ID, parseToYearAndMonth } from './utility'
+import axios from 'axios'
 
 interface Category {
   id: string,
@@ -23,7 +22,7 @@ interface PriceItem {
   cid: string
 
 }
-interface PriceItemWithCategory extends PriceItem {
+export interface PriceItemWithCategory extends PriceItem {
   category: Category
 }
 interface IProps {
@@ -34,17 +33,35 @@ export interface IAppState {
   items: { [key: string]: PriceItem }
 }
 
+export interface IAppPageState extends IAppState {
+  currentDate: {
+    year: number,
+    month: number
+  }
+}
+
 export const AppContext = React.createContext({})
 
-export class App extends Component<IProps, IAppState> {
+export class App extends Component<IProps, IAppPageState> {
   actions: {};
   constructor(props: IProps) {
     super(props);
     this.state = {
-      categories: flatternArray(testCategories),
-      items: flatternArray(testItems),
+      categories: {},
+      items: {},
+      currentDate: parseToYearAndMonth()
     }
     this.actions = {
+      selectNewMonth: async (year: number, month: number) => {
+        const getURLWithData = `/items?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`
+        const items = await axios.get(getURLWithData)
+        this.setState({
+          items: flatternArr(items.data),
+          currentDate: { year, month },
+          // isLoading: false,
+        })
+        return items
+      },
       deleteItem: (item: { id: string }) => {
         delete this.state.items[item.id]
         this.setState({
@@ -69,6 +86,18 @@ export class App extends Component<IProps, IAppState> {
         }
         this.setState({
           items: { ...this.state.items, [modifiedItem.id]: modifiedItem }
+        })
+      },
+      getInitalData: () => {
+        const { currentDate } = this.state
+        const getURLWithData = `/items?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`
+        const promiseArr = [axios.get('/categories'), axios.get(getURLWithData)]
+        Promise.all(promiseArr).then(arr => {
+          const [categories, items] = arr
+          this.setState({
+            items: flatternArr(items.data),
+            categories: flatternArr(categories.data)
+          })
         })
       }
     }
