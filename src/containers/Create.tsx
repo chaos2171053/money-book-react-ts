@@ -30,10 +30,12 @@ class CreatePage extends Component<IProps & RouteComponentProps, IState>{
 
     constructor(props: IProps & RouteComponentProps) {
         super(props)
+        const { id } = props.match.params
+        const { categories, items } = props.data
         this.state = {
             validationPassed: false,
-            selectedTab: TYPE_OUTCOME,
-            selectedCategory: {
+            selectedTab: (id && items[id]) ? categories[items[id].cid].type : TYPE_OUTCOME,
+            selectedCategory: (id && items[id]) ? categories[items[id].cid] : {
                 id: '',
                 name: '',
                 type: '',
@@ -69,12 +71,22 @@ class CreatePage extends Component<IProps & RouteComponentProps, IState>{
         } else {
             // update 
             //this.props.actions.updateItem(data, this.state.selectedCategory.id).then(this.navigateToHome)
-            this.props.actions.createItem(data, this.state.selectedCategory.id)
+            this.props.actions.updateItem(data, this.state.selectedCategory.id)
         }
         this.props.history.push('/')
     }
     navigateToHome = () => {
         this.props.history.push('/')
+    }
+    componentDidMount() {
+        // const { id } = this.props.match.params
+        // this.props.actions.getEditData(id).then(data => {
+        //     const { editItem, categories } = data
+        //     this.setState({
+        //         selectedTab: (id && editItem) ? categories[editItem.cid].type : TYPE_OUTCOME,
+        //         selectedCategory: (id && editItem) ? categories[editItem.cid] : null,
+        //     })
+        // })
     }
 
     render() {
@@ -98,7 +110,10 @@ class CreatePage extends Component<IProps & RouteComponentProps, IState>{
                     selectedCategory={selectedCategory}
                     onSelectCategory={this.selectCategory}
                 />
-                <PriceForm onFormSubmit={this.submitForm} onCancelSubmit={this.cancelSubmit} ></PriceForm>
+                <PriceForm
+                    item={editItem}
+                    onFormSubmit={this.submitForm}
+                    onCancelSubmit={this.cancelSubmit} ></PriceForm>
                 {!validationPassed &&
                     <div className="alert alert-danger mt-5" role="alert">
                         请选择分类信息

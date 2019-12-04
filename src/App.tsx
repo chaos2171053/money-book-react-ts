@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Home } from './containers/Home'
@@ -20,8 +20,11 @@ interface PriceItem {
   title: string,
   price: number,
   date: string,
-  cid: string,
-  category: { id: string, name: string, type: string, iconName: string }
+  cid: string
+
+}
+interface PriceItemWithCategory extends PriceItem {
+  category: Category
 }
 interface IProps {
 
@@ -57,6 +60,16 @@ export class App extends Component<IProps, IAppState> {
         this.setState({
           items: { ...this.state.items, [newId]: newItem }
         })
+      },
+      updateItem: (item: PriceItem, updatedCategoryId: string) => {
+        const modifiedItem = {
+          ...item,
+          cid: updatedCategoryId,
+          timestamp: new Date(item.date).getTime()
+        }
+        this.setState({
+          items: { ...this.state.items, [modifiedItem.id]: modifiedItem }
+        })
       }
     }
   }
@@ -76,8 +89,6 @@ export class App extends Component<IProps, IAppState> {
           </div>
         </Router>
       </AppContext.Provider>
-
-
     )
   }
 }
