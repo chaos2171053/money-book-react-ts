@@ -8,7 +8,6 @@ import CreateBtn from '../components/CreateBtn'
 import { Tab, Tabs } from '../components/Tabs'
 import Ionicon from 'react-ionicons'
 import WithContext from '../components/WithContext';
-import { IAppPageState } from '../App'
 interface Category {
     id: string,
     name: string,

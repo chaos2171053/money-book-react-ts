@@ -62,7 +62,8 @@ export class App extends Component<IProps, IAppPageState> {
         })
         return items
       },
-      deleteItem: (item: { id: string }) => {
+      deleteItem: async (item: { id: string }) => {
+        await axios.delete(`/items/${item.id}`)
         delete this.state.items[item.id]
         this.setState({
           items: this.state.items
