@@ -14,17 +14,8 @@ interface IProps {
     onSelectCategory: Function
 }
 
-// interface IState {
-//     selectedCategoryId?: string | null
-// }
-
-
-
 export class CategorySelect extends Component<IProps> {
     selectCatory = (event: any, category: Category) => {
-        this.setState({
-            selectedCategoryId: category.id
-        })
         event.preventDefault()
         this.props.onSelectCategory(category)
     }
