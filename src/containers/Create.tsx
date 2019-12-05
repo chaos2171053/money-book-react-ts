@@ -59,7 +59,7 @@ class CreatePage extends Component<IProps & RouteComponentProps, IState>{
         this.props.history.push('/')
     }
     submitForm = (data: any, isEditMode: boolean) => {
-        if (!this.state.selectedCategory.id) {
+        if (!this.state.selectedCategory) {
             this.setState({
                 validationPassed: false
             })
