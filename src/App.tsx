@@ -34,12 +34,12 @@ export interface IAppState {
 }
 
 export interface IAppPageState extends IAppState {
+  isLoading: boolean,
   currentDate: {
     year: number,
     month: number
   }
 }
-
 export const AppContext = React.createContext({})
 
 export class App extends Component<IProps, IAppPageState> {
@@ -49,16 +49,20 @@ export class App extends Component<IProps, IAppPageState> {
     this.state = {
       categories: {},
       items: {},
+      isLoading: false,
       currentDate: parseToYearAndMonth()
     }
     this.actions = {
       selectNewMonth: async (year: number, month: number) => {
+        this.setState({
+          isLoading: true,
+        })
         const getURLWithData = `/items?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`
         const items = await axios.get(getURLWithData)
         this.setState({
           items: flatternArr(items.data),
           currentDate: { year, month },
-          // isLoading: false,
+          isLoading: false,
         })
         return items
       },
@@ -90,10 +94,16 @@ export class App extends Component<IProps, IAppPageState> {
         })
       },
       getInitalData: () => {
-        const { currentDate } = this.state
+        const { currentDate, isLoading } = this.state
         const getURLWithData = `/items?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`
         const promiseArr = [axios.get('/categories'), axios.get(getURLWithData)]
+        this.setState({
+          isLoading: true
+        })
         Promise.all(promiseArr).then(arr => {
+          this.setState({
+            isLoading: false
+          })
           const [categories, items] = arr
           this.setState({
             items: flatternArr(items.data),

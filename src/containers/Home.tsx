@@ -8,6 +8,7 @@ import CreateBtn from '../components/CreateBtn'
 import { Tab, Tabs } from '../components/Tabs'
 import Ionicon from 'react-ionicons'
 import WithContext from '../components/WithContext';
+import Loader from '../components/Loader'
 interface Category {
     id: string,
     name: string,
@@ -39,7 +40,8 @@ interface IProps extends RouteComponentProps {
         currentDate: {
             year: number,
             month: number
-        }
+        },
+        isLoading: boolean
     },
     actions: {
         deleteItem: Function,
@@ -61,7 +63,8 @@ class HomePage extends Component<IProps, IState> {
             currentDate: {
                 year: 0,
                 month: 0
-            }
+            },
+            isLoading: false
         }
     }
     constructor(props: IProps) {
@@ -98,7 +101,7 @@ class HomePage extends Component<IProps, IState> {
     render() {
         const { data } = this.props
 
-        let { items, categories, currentDate } = data
+        let { items, categories, currentDate, isLoading } = data
         const { tabView } = this.state
         const itemsWithCategory = Object.keys(items).map((id: string) => {
             items[id].category = categories[items[id].cid]
@@ -128,7 +131,12 @@ class HomePage extends Component<IProps, IState> {
                     </div>
                 </div>
                 <div className="content-area py-3 px-3">
-                    <Tabs activeIndex={0} onTabChange={this.changeView}>
+                    {isLoading &&
+                        <Loader />
+                    }
+                    {!isLoading &&
+                        <React.Fragment>
+                            <Tabs activeIndex={0} onTabChange={this.changeView}>
                         <Tab>
                             <Ionicon
                                 className="rounded-circle mr-2"
@@ -153,9 +161,17 @@ class HomePage extends Component<IProps, IState> {
                         itemsWithCategory && tabView === LIST_VIEW && <PriceList items={itemsWithCategory} onModifyItem={this.modifyItem} onDeleteItem={this.deteteItem} />
 
                     }
+                    {tabView === LIST_VIEW && itemsWithCategory.length === 0 &&
+                        <div className="alert alert-light text-center no-record">
+                            您还没有任何记账记录
+                    </div>
+                    }
                     {
                         tabView === CHART_VIEW &&
                         <h1>这里是图表</h1>
+                    }
+
+                        </React.Fragment>
                     }
                 </div>
             </React.Fragment>
