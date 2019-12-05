@@ -13,9 +13,11 @@ interface IState {
 
 export default class MonthPicker extends Component<IProps, IState> {
     private monthPicker: React.RefObject<HTMLButtonElement>
+    node: React.RefObject<HTMLDivElement>
     constructor(props: IProps) {
         super(props)
         this.monthPicker = React.createRef()
+        this.node = React.createRef()
         this.state = {
             isOpen: false,
             selectYear: this.props.year
@@ -50,14 +52,16 @@ export default class MonthPicker extends Component<IProps, IState> {
     }
 
     handleClick = (event: any) => {
-
-        if (this.monthPicker.current === event.target) {
-            return
+        const currentNode = this.node.current
+        if (currentNode) {
+            if (currentNode.contains(event.target)) {
+                return
+            }
         }
-
         this.setState({
             isOpen: false
         })
+
     }
 
     componentDidMount() {
@@ -74,10 +78,9 @@ export default class MonthPicker extends Component<IProps, IState> {
         const monthRange = range(12, 1)
         const yearRange = range(9, -4).map(item => item + 2019)
         return (
-            <div className='dropdown month-picker-component' >
+            <div className='dropdown month-picker-component' ref={this.node} >
                 <h4>选择月份</h4>
                 <button className="btn btn-lg btn-secondary dropdown-toggle"
-                    ref={this.monthPicker}
                     onClick={this.toogleDropwodn}>
                     {`${year}年${padLeft(month)}月`}
                 </button>
