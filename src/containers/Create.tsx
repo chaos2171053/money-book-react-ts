@@ -67,14 +67,11 @@ class CreatePage extends Component<IProps & RouteComponentProps, IState>{
         }
         if (!isEditMode) {
             // create
-            //this.props.actions.createItem(data, this.state.selectedCategory.id).then(this.navigateToHome)
-            this.props.actions.createItem(data, this.state.selectedCategory.id)
+            this.props.actions.createItem(data, this.state.selectedCategory.id).then(this.navigateToHome)
         } else {
             // update 
-            //this.props.actions.updateItem(data, this.state.selectedCategory.id).then(this.navigateToHome)
-            this.props.actions.updateItem(data, this.state.selectedCategory.id)
+            this.props.actions.updateItem(data, this.state.selectedCategory.id).then(this.navigateToHome)
         }
-        this.props.history.push('/')
     }
     navigateToHome = () => {
         this.props.history.push('/')
