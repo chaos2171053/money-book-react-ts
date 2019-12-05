@@ -93,22 +93,20 @@ export class App extends Component<IProps, IAppPageState> {
           items: { ...this.state.items, [modifiedItem.id]: modifiedItem }
         })
       },
-      getInitalData: () => {
-        const { currentDate, isLoading } = this.state
+      getInitalData: async () => {
+        const { currentDate } = this.state
         const getURLWithData = `/items?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`
-        const promiseArr = [axios.get('/categories'), axios.get(getURLWithData)]
         this.setState({
           isLoading: true
         })
-        Promise.all(promiseArr).then(arr => {
-          this.setState({
-            isLoading: false
-          })
-          const [categories, items] = arr
-          this.setState({
-            items: flatternArr(items.data),
-            categories: flatternArr(categories.data)
-          })
+        const promiseArr = await Promise.all([axios.get('/categories'), axios.get(getURLWithData)])
+        this.setState({
+          isLoading: false
+        })
+        const [categories, items] = promiseArr
+        this.setState({
+          items: flatternArr(items.data),
+          categories: flatternArr(categories.data)
         })
       }
     }
