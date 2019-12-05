@@ -137,39 +137,39 @@ class HomePage extends Component<IProps, IState> {
                     {!isLoading &&
                         <React.Fragment>
                             <Tabs activeIndex={0} onTabChange={this.changeView}>
-                        <Tab>
-                            <Ionicon
-                                className="rounded-circle mr-2"
-                                fontSize="25px"
-                                color={'#007bff'}
-                                icon='ios-paper'
-                            />
-                            列表模式
+                                <Tab>
+                                    <Ionicon
+                                        className="rounded-circle mr-2"
+                                        fontSize="25px"
+                                        color={'#007bff'}
+                                        icon='ios-paper'
+                                    />
+                                    列表模式
                         </Tab>
-                        <Tab>
-                            <Ionicon
-                                className="rounded-circle mr-2"
-                                fontSize="25px"
-                                color={'#007bff'}
-                                icon='ios-pie'
-                            />
-                            图表模式
+                                <Tab>
+                                    <Ionicon
+                                        className="rounded-circle mr-2"
+                                        fontSize="25px"
+                                        color={'#007bff'}
+                                        icon='ios-pie'
+                                    />
+                                    图表模式
                         </Tab>
-                    </Tabs>
-                    <CreateBtn onClick={this.createItem}></CreateBtn>
-                    {
-                        itemsWithCategory && tabView === LIST_VIEW && <PriceList items={itemsWithCategory} onModifyItem={this.modifyItem} onDeleteItem={this.deteteItem} />
+                            </Tabs>
+                            <CreateBtn onClick={this.createItem}></CreateBtn>
+                            {
+                                itemsWithCategory && tabView === LIST_VIEW && <PriceList items={itemsWithCategory} onModifyItem={this.modifyItem} onDeleteItem={this.deteteItem} />
 
-                    }
-                    {tabView === LIST_VIEW && itemsWithCategory.length === 0 &&
-                        <div className="alert alert-light text-center no-record">
-                            您还没有任何记账记录
+                            }
+                            {tabView === LIST_VIEW && itemsWithCategory.length === 0 &&
+                                <div className="alert alert-light text-center no-record">
+                                    您还没有任何记账记录
                     </div>
-                    }
-                    {
-                        tabView === CHART_VIEW &&
-                        <h1>这里是图表</h1>
-                    }
+                            }
+                            {
+                                tabView === CHART_VIEW &&
+                                <h1>这里是图表</h1>
+                            }
 
                         </React.Fragment>
                     }

@@ -67,21 +67,24 @@ export class App extends Component<IProps, IAppPageState> {
         return items
       },
       deleteItem: async (item: { id: string }) => {
-        await axios.delete(`/items/${item.id}`)
+        const deleteItem = await axios.delete(`/items/${item.id}`)
         delete this.state.items[item.id]
         this.setState({
           items: this.state.items
         })
+        return deleteItem
       },
-      createItem: (data: any, categoryId: string) => {
+      createItem: async (data: any, categoryId: string) => {
         const newId = ID()
         const parsedDate = parseToYearAndMonth(data.date)
         data.monthCategory = `${parsedDate.year}-${parsedDate.month}`
         data.timestamp = new Date(data.date).getTime()
-        const newItem = { ...data, id: newId, cid: categoryId }
+        const newItem = await axios.post('/items', { ...data, id: newId, cid: categoryId })
         this.setState({
-          items: { ...this.state.items, [newId]: newItem }
+          items: { ...this.state.items, [newId]: newItem.data },
+          isLoading: false,
         })
+        return newItem.data
       },
       updateItem: (item: PriceItem, updatedCategoryId: string) => {
         const modifiedItem = {
@@ -108,6 +111,7 @@ export class App extends Component<IProps, IAppPageState> {
           items: flatternArr(items.data),
           categories: flatternArr(categories.data)
         })
+        return items
       }
     }
   }
