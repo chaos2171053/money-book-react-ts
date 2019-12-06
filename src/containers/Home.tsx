@@ -179,8 +179,7 @@ class HomePage extends Component<IProps, IState> {
         )
     }
 }
-
-export const Home = WithContext(withRouter(HomePage))
+export const Home = withRouter(WithContext(HomePage))
 
 
 

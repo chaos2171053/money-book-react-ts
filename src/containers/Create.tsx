@@ -121,4 +121,5 @@ class CreatePage extends Component<IProps & RouteComponentProps, IState>{
         )
     }
 }
-export default WithContext(withRouter(CreatePage))
+
+export default withRouter(WithContext(CreatePage))
