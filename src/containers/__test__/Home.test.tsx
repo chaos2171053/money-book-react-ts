@@ -1,62 +1,81 @@
 import React from 'react'
-import { mount, ReactWrapper } from 'enzyme'
-
-import { Home, items, newItem } from '../Home'
-
-import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME, parseToYearAndMonth, padLeft } from '../../utility'
-import MonthPicker from '../../components/MonthPicker'
-import TotalPrice from '../../components/TotalPrice';
-import CreateBtn from '../../components/CreateBtn'
+import { mount } from 'enzyme'
+import { MemoryRouter } from 'react-router-dom'
+import { Home } from '../Home'
+import { parseToYearAndMonth, flatternArr, LIST_VIEW, CHART_VIEW } from '../../utility'
+import Loader from '../../components/Loader'
 import PriceList from '../../components/PriceList'
-import ViewTab from '../../components/ViewTab'
+import { Tabs } from '../../components/Tabs'
+// import PieChart from '../../components/PieChart'
+import { testCategories, testItems } from '../../testData'
 
-let wrapper: ReactWrapper
+const initData = {
+    categories: {},
+    items: {},
+    isLoading: false,
+    categoriesIsLoaded: false,
+    currentDate: parseToYearAndMonth()
+}
+const withLoadingData = {
+    ...initData, isLoading: true
+}
+const withLoadedData = {
+    categories: flatternArr(testCategories),
+    items: flatternArr(testItems),
+    isLoading: false,
+    currentDate: parseToYearAndMonth()
+}
+const actions = {
+    getInitalData: jest.fn(),
+    selectNewMonth: jest.fn(),
+    deleteItem: jest.fn()
+}
+it('test home container first render, without any data, getInitalData should be called', () => {
+    const wrapper = mount(
+        <MemoryRouter>
+            <Home data={initData} actions={actions} />
+        </MemoryRouter>
+    )
+    expect(wrapper.find('.no-record').length).toEqual(1)
+    expect(actions.getInitalData).toHaveBeenCalled()
+})
 
-describe('test Home container component', () => {
-    beforeEach(() => {
-        wrapper = mount(<Home></Home>)
-    })
+it('test home container with loading state, loading icon should show up', () => {
+    const wrapper = mount(
+        <MemoryRouter>
+            <Home data={withLoadingData} actions={actions} />
+        </MemoryRouter>
+    )
+    expect(wrapper.find(Loader).length).toEqual(1)
+})
 
-    it('should render the default layout', () => {
+describe('test home container with loaded data', () => {
+    const wrapper = mount(
+        <MemoryRouter>
+            <Home data={withLoadedData} actions={actions} />
+        </MemoryRouter>
+    )
+    const wrapperInstance = wrapper.find(Home).instance()
+    it('should show price list and view tab', () => {
         expect(wrapper.find(PriceList).length).toEqual(1)
-        expect(wrapper.find(PriceList).props().items.length).toEqual(1)
-        expect(wrapper.find(ViewTab).props().activeTab).toEqual(LIST_VIEW)
-        expect(wrapper.find(MonthPicker).props().year).toEqual(parseToYearAndMonth().year)
-        expect(wrapper.find(MonthPicker).props().month).toEqual(parseToYearAndMonth().month)
+        expect(wrapper.find(Tabs).length).toEqual(1)
+        //expect(wrapperInstance.state('tabView')).toEqual(LIST_VIEW)
+        expect(wrapper.find(Loader).length).toEqual(0)
     })
-
-    it('click the another view tab, should change the default view', () => {
-        wrapper.find('.nav-item a').last().simulate('click')
-        expect(wrapper.find(ViewTab).props().activeTab).toEqual(CHART_VIEW)
-    })
-    it('click the new month item, should switch to the correct item', () => {
+    it('click the year and month should trigger the selectNewMonth callback', () => {
         wrapper.find('.dropdown-toggle').simulate('click')
-        wrapper.find('.months-range .dropdown-item').at(8).simulate('click')
-        expect(wrapper.find(MonthPicker).props().month).toEqual(9)
+        wrapper.find('.months-range .dropdown-item').first().simulate('click')
+        expect(actions.selectNewMonth).toHaveBeenCalledWith(initData.currentDate.year, 1)
     })
-    it('click the new button, should create the new item', () => {
-        wrapper.find(CreateBtn).simulate('click')
-        expect(wrapper.find(PriceList).props().items.length).toEqual(2)
-        expect(wrapper.state('items')[0]).toEqual(newItem)
+    it('click the item delete button should trigger the deleteItem callback', () => {
+        const firstItem = wrapper.find('.list-group .list-group-item').first()
+        firstItem.find('a').last().simulate('click')
+        expect(actions.deleteItem).toHaveBeenCalledWith(testItems[0])
     })
-
-    it('click modify button, should modify the item', () => {
-        wrapper.find(PriceList).children().first().find('button').first().simulate('click')
-        expect(wrapper.find(PriceList).props().items[0].title).toEqual('update')
-    })
-    it('click delete button, should remove the item', () => {
-        wrapper.find(PriceList).children().first().find('button').last().simulate('click')
-        expect(wrapper.find(PriceList).props().items.length).toEqual(0)
-    })
-    it('validate total income price', () => {
-        let totalIncome = 0
-
-        wrapper.find(PriceList).props().items.forEach(item => {
-            if (item.category.type === TYPE_INCOME) {
-                totalIncome += item.price
-            }
-
-        })
-        expect(wrapper.find(TotalPrice).props().income).toEqual(totalIncome)
+    it('click the the tab should change the view and state', () => {
+        wrapper.find('.nav-tabs .nav-item a').at(1).simulate('click')
+        expect(wrapper.find(PriceList).length).toEqual(0)
+        // expect(wrapper.find(PieChart).length).toEqual(2)
+        //expect(wrapperInstance.state.tabView).toEqual(CHART_VIEW)
     })
 })
